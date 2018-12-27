@@ -1,11 +1,25 @@
-{ 
-  
+{
   "name": "syslog-node",
   "version": "1.0.0",
   "scripts": {
-    "build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ node-gyp rebuild"
+    "build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ node-gyp rebuild",
+    "install": "node-gyp rebuild"
   },
   "main": "index.cc",
   "author": "luying3@staff.sina.com.cn",
-  "license": "MIT"
+  "license": "MIT",
+  "gypfile": true,
+  "description": "用syslog发送系统日志",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "''"
+  },
+  "keywords": [
+    "syslog",
+    "openlog",
+    "node"
+  ]
 }
