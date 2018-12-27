@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "''"
+    "url": "https://github.com/myluluy/syslog-node.git"
   },
   "keywords": [
     "syslog",
