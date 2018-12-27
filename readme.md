@@ -1,10 +1,10 @@
-# syslognode
+# node-syslog
 
 通过调用syslog发送系统日志
 
 ## 安装 
 ```bash
-$ npm install @myluluy/syslognode
+$ npm install @myluluy/node-syslog
 ```
 ## API
 Syslog.syslog(ident, option, facility, priority, format`)
@@ -18,7 +18,7 @@ Syslog.syslog(ident, option, facility, priority, format`)
 
 ## 使用
 ```js
-    let Syslog = require('@myluluy/syslognode')
+    let Syslog = require('@myluluy/node-syslog')
     Syslog.syslog('xx-xx', Syslog.option.LOG_PID, Syslog.facility.LOG_USER, Syslog.priority.LOG_NOTICE, 'log message')
 });
 
