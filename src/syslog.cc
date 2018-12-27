@@ -4,7 +4,6 @@
 #include <uv.h>
 #include <syslog.h>
  
- 
 using v8::FunctionCallbackInfo;
 using v8::Function;
 using v8::Isolate;
@@ -12,191 +11,144 @@ using v8::Local;
 using v8::Object;
 using v8::String;
 using v8::Value;
-using v8::Array;
+using v8::Number;
 struct  reqData {
-  uv_work_t req;
+  // uv_work_t req;
   char* ident;
   int option;
   int facility;
   int priority;
   char* format;
-  v8::Persistent<Function> callback;
+  // v8::Persistent<Function> callback;
 };
 
-int GetOption( std::string option) {
-  int _option;
-  if(option == "LOG_CONS"){
-    _option = LOG_CONS;
-  }
-  if(option == "LOG_NDELAY"){
-    _option = LOG_NDELAY;
-  }
-  if(option == "LOG_PERROR"){
-    _option = LOG_PERROR;
-  }
-  if(option == "LOG_PID"){
-    _option = LOG_PID;
-  }
-  return _option;
-}
-
-int GetFacility ( std::string facility) {
-  int _facility;
-  if(facility == "LOG_AUTH"){
-    _facility = LOG_AUTH;
-  }
-  if(facility == "LOG_AUTHPRIV") {
-    _facility = LOG_AUTHPRIV;
-  }
-  if(facility == "LOG_CRON") {
-    _facility = LOG_CRON;
-  }
-  if(facility == "LOG_DAEMON"){
-    _facility = LOG_DAEMON;
-  }
-  if(facility ==  "LOG_KERN"){
-    _facility = LOG_KERN;
-  }
-  if(facility == "LOG_LOCAL0"){
-    _facility = LOG_LOCAL0;
-  }
-  if(facility == "LOG_LOCAL1"){
-    _facility = LOG_LOCAL1;
-  }
-
-  if(facility == "LOG_LOCAL2"){
-    _facility = LOG_LOCAL2;
-  }
-
-  if(facility == "LOG_LOCAL3"){
-    _facility = LOG_LOCAL3;
-  }
-
-  if(facility == "LOG_LOCAL4"){
-    _facility = LOG_LOCAL4;
-  }
-
-  if(facility == "LOG_LOCAL5"){
-    _facility = LOG_LOCAL5;
-  }
-
-  if(facility == "LOG_LOCAL6"){
-    _facility = LOG_LOCAL6;
-  }
-
-  if(facility == "LOG_LOCAL7"){
-    _facility = LOG_LOCAL7;
-  }
-  if(facility == "LOG_LPR"){
-    _facility = LOG_LPR;
-  }
-  if(facility == "LOG_MAIL"){
-    _facility = LOG_MAIL;
-  }
-  if(facility == "LOG_NEWS") {
-    _facility = LOG_NEWS;
-  }
-  if(facility == "LOG_SYSLOG"){
-    _facility = LOG_SYSLOG;
-  }
-  if(facility == "LOG_USER"){
-    _facility = LOG_USER;
-  }
-  if(facility == "LOG_UUCP") {
-    _facility = LOG_UUCP;
-  }
-  return _facility;
-}
-
-int GetPriority ( std::string priority) {
-  int _priority;
-  if(priority == "LOG_EMERG"){
-    _priority = LOG_EMERG;
-  }
-  if (priority == "LOG_ALERT") {
-    _priority = LOG_ALERT;
-  }
-  if(priority == "LOG_CRIT") {
-    _priority = LOG_CRIT;
-  }
-  if(priority == "LOG_ERR") {
-    _priority = LOG_ERR;
-  }
-  if(priority == "LOG_WARNING") {
-    _priority = LOG_WARNING;
-  }
-  if(priority == "LOG_NOTICE") {
-    _priority = LOG_NOTICE;
-  }
-  if(priority == "LOG_INFO") {
-      _priority = LOG_INFO;
-  }
-  if(priority == "LOG_DEBUG") {
-      _priority = LOG_DEBUG;
-  }
-  return _priority;
-}
+// uv_loop_t *loop;
 
 void Syslog( char* ident, int option, int facility,  int priority, char* format) {
-  
   openlog(ident, option, facility);
   syslog(priority, format);
   closelog();
-  // args.GetReturnValue().Set(String::NewFromUtf8(isolate, cFormat));
 
 }
-// void uv_syslog(uv_work_t *req) {
-//   // Syslog(req->data);
-//   reqData *request = static_cast<reqData *>(req->data);
-//   Syslog(request->ident, request->option, request->facility, request->priority, request->format);
+// void Openlog(char* ident, int option, int facility) {
+//   openlog(ident, option, facility);
 // }
-// void uv_syslog_after(uv_work_t *req, int status) {
-//   Isolate* isolate = Isolate::GetCurrent();
-// 	v8::HandleScope scope(isolate);
-//   reqData *request = static_cast<reqData *>(req->data);
-//   const unsigned argc = 1;
-//   Local<Array> res = Array::New(isolate);
-//   Local<Value> argv[argc] = {res};
-//   Local<Function> cb = Local<Function>::New(isolate, request->callback);
-//   cb->Call(isolate->GetCurrentContext()->Global(), argc, argv);
-//   delete request;
-// 
+// void Closelog() {
+//   closelog();
 // }
-void AsyncSyslog(const FunctionCallbackInfo<Value>& args) {
+ // void uv_syslog(uv_work_t *req) {
+ //   reqData *request = static_cast<reqData *>(req->data);
+ //   Syslog(request->ident, request->option, request->facility, request->priority, request->format);
+
+ // }
+ // void uv_syslog_after(uv_work_t *req, int status) {
+ //   Isolate* isolate = Isolate::GetCurrent();
+ // 	 v8::HandleScope scope(isolate);
+ //   reqData *request = static_cast<reqData *>(req->data);
+ //   const unsigned argc = 1;
+ //   Local<Array> res = Array::New(isolate);
+ //   Local<Value> argv[argc] = {res};
+ //   Local<Function> cb = Local<Function>::New(isolate, request->callback);
+ //   cb->Call(isolate->GetCurrentContext()->Global(), argc, argv);
+ //   delete request;
+ 
+ // }
+void WriteSyslog(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = Isolate::GetCurrent();
   v8::HandleScope scope(isolate);
   v8::String::Utf8Value v8Ident(args[0]->ToString());
-  v8::String::Utf8Value v8Option(args[1]->ToString());
-  v8::String::Utf8Value v8Facility(args[2]->ToString());
-  v8::String::Utf8Value v8Priority(args[3]->ToString());
+  Local<Number> v8Option = Local<Number>::Cast(args[1]);
+  Local<Number> v8Facility = Local<Number>::Cast(args[2]);
+  Local<Number> v8Priority = Local<Number>::Cast(args[3]);
   v8::String::Utf8Value v8Format(args[4]->ToString());
-  Local<Function> cb = Local<Function>::Cast(args[5]);
+  // Local<Function> cb = Local<Function>::Cast(args[5]);
   char *cIdent;
   char *cFormat;
   cIdent =  *v8Ident;
-  std::string cOption(*v8Option);
-  std::string cFacility(*v8Facility);
-  std::string cPriority(*v8Priority);
   cFormat = *v8Format;
-  int option = GetOption(cOption);
-  int facility = GetFacility(cFacility);
-  int priority = GetPriority(cPriority);
+  int option = v8Option->NumberValue();
+  int facility = v8Facility->NumberValue();
+  int priority = v8Priority->NumberValue();
   reqData* request = new reqData;
-  request->req.data = request;
+  // request->req.data = request;
   request->ident = cIdent;
   request->option = option;
   request->facility = facility;
   request->priority = priority;
   request->format = cFormat;
-  request->callback.Reset(isolate, cb);
+  // request->callback.Reset(isolate, cb);
   // uv_work_t* req = new uv_work_t();
-  //uv_queue_work(uv_default_loop(), &request->req, (uv_work_cb)uv_syslog, uv_syslog_after);
+  
+  // loop = uv_default_loop();
+  // uv_queue_work(loop, &request->req, uv_syslog, uv_syslog_after);
   Syslog(request->ident, request->option, request->facility, request->priority, request->format);
+  // uv_run(loop, UV_RUN_DEFAULT);
+  // uv_loop_close(loop);
+}
+
+void Option (const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    Local<Object> obj = Object::New(isolate);
+    obj->Set(String::NewFromUtf8(isolate, "LOG_PID"), v8::Number::New(isolate, LOG_PID));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_CONS"), v8::Number::New(isolate, LOG_CONS));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_ODELAY"), v8::Number::New(isolate, LOG_ODELAY));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_NDELAY"), v8::Number::New(isolate, LOG_NDELAY));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_NOWAIT"), v8::Number::New(isolate, LOG_NOWAIT));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_PERROR"), v8::Number::New(isolate, LOG_PERROR));
+    args.GetReturnValue().Set(obj);
+}
+
+void Facility (const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    Local<Object> obj = Object::New(isolate);
+    obj->Set(String::NewFromUtf8(isolate, "LOG_KERN"), v8::Number::New(isolate, LOG_KERN));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_USER"), v8::Number::New(isolate, LOG_USER));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_MAIL"), v8::Number::New(isolate, LOG_MAIL));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_DAEMON"), v8::Number::New(isolate, LOG_DAEMON));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_AUTH"), v8::Number::New(isolate, LOG_AUTH));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_SYSLOG"), v8::Number::New(isolate, LOG_SYSLOG));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LPR"), v8::Number::New(isolate, LOG_LPR));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_NEWS"), v8::Number::New(isolate, LOG_NEWS));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_UUCP"), v8::Number::New(isolate, LOG_UUCP));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_CRON"), v8::Number::New(isolate, LOG_CRON));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_AUTHPRIV"), v8::Number::New(isolate, LOG_AUTHPRIV));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_FTP"), v8::Number::New(isolate, LOG_FTP));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_NETINFO"), v8::Number::New(isolate, LOG_NETINFO));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_REMOTEAUTH"), v8::Number::New(isolate, LOG_REMOTEAUTH));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_INSTALL"), v8::Number::New(isolate, LOG_INSTALL));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_RAS"), v8::Number::New(isolate, LOG_RAS));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL0"), v8::Number::New(isolate, LOG_LOCAL0));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL1"), v8::Number::New(isolate, LOG_LOCAL1));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL2"), v8::Number::New(isolate, LOG_LOCAL2));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL3"), v8::Number::New(isolate, LOG_LOCAL3));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL4"), v8::Number::New(isolate, LOG_LOCAL4));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL5"), v8::Number::New(isolate, LOG_LOCAL5));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL6"), v8::Number::New(isolate, LOG_LOCAL6));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL7"), v8::Number::New(isolate, LOG_LOCAL7));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_LAUNCHD"), v8::Number::New(isolate, LOG_LAUNCHD));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_NFACILITIES"), v8::Number::New(isolate, LOG_NFACILITIES));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_FACMASK"), v8::Number::New(isolate, LOG_FACMASK));
+    args.GetReturnValue().Set(obj);
+}
+void Priority (const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    Local<Object> obj = Object::New(isolate);
+    obj->Set(String::NewFromUtf8(isolate, "LOG_EMERG"), v8::Number::New(isolate, LOG_EMERG));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_ALERT"), v8::Number::New(isolate, LOG_ALERT));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_CRIT"), v8::Number::New(isolate, LOG_CRIT));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_ERR"), v8::Number::New(isolate, LOG_ERR));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_WARNING"), v8::Number::New(isolate, LOG_WARNING));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_NOTICE"), v8::Number::New(isolate, LOG_NOTICE));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_INFO"), v8::Number::New(isolate, LOG_INFO));
+    obj->Set(String::NewFromUtf8(isolate, "LOG_DEBUG"), v8::Number::New(isolate, LOG_DEBUG));
+    args.GetReturnValue().Set(obj); 
 }
 
 void init(Local<Object> exports) {
-  // NODE_SET_METHOD(exports, "syslogAsync", Syslog);
-  NODE_SET_METHOD(exports, "syslog", AsyncSyslog);
+  NODE_SET_METHOD(exports, "option", Option);
+  NODE_SET_METHOD(exports, "facility", Facility);
+  NODE_SET_METHOD(exports, "priority", Priority);
+  NODE_SET_METHOD(exports, "syslog", WriteSyslog);
 }
  
-NODE_MODULE(returnValue, init);
+NODE_MODULE(Syslog, init);
