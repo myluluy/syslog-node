@@ -4,7 +4,7 @@
 
 ## 安装 
 ```bash
-$ npm install syslognode
+$ npm install @myluluy/syslognode
 ```
 ## API
 Syslog.syslog(ident, option, facility, priority, format`)
@@ -18,7 +18,7 @@ Syslog.syslog(ident, option, facility, priority, format`)
 
 ## 使用
 ```js
-    let Syslog = require('syslognode')
+    let Syslog = require('@myluluy/syslognode')
     Syslog.syslog('xx-xx', Syslog.option.LOG_PID, Syslog.facility.LOG_USER, Syslog.priority.LOG_NOTICE, 'log message')
 });
 

@@ -1,5 +1,5 @@
 {
-  "name": "syslognode",
+  "name": "@myluluy/syslognode",
   "version": "1.0.0",
   "scripts": {
     "build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ node-gyp rebuild",
