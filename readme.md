@@ -6,6 +6,10 @@
 ```bash
 $ npm install @myluluy/node-syslog
 ```
+## 如果安装不成功尝试增加 --unsafe-perm 选项
+```bash
+$ npm install @myluluy/node-syslog --unsafe-perm
+```
 ## API
 Syslog.syslog(ident, option, facility, priority, format`)
 
