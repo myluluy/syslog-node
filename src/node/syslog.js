@@ -2,6 +2,7 @@ let Syslog = require('../../build/Release/syslog')
 let option = Syslog.option()
 let facility = Syslog.facility()
 let priority = Syslog.priority()
+console.log(Syslog.option())
 /**
  * 
  * @param {string} ident  - idents指向的字符串可以是想要打出的任意字符，它所表示的字符串将固定地加在每行日志的前面以标识这个日志，该标志通常设置为程序的名称

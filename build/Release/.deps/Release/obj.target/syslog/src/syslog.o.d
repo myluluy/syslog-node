@@ -5,14 +5,7 @@ Release/obj.target/syslog/src/syslog.o: ../src/syslog.cc \
   /Users/liuluying/.node-gyp/10.10.0/include/node/v8-version.h \
   /Users/liuluying/.node-gyp/10.10.0/include/node/v8config.h \
   /Users/liuluying/.node-gyp/10.10.0/include/node/v8-platform.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/node_version.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/errno.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/version.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/unix.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/threadpool.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/darwin.h \
-  /Users/liuluying/.node-gyp/10.10.0/include/node/uv/pthread-barrier.h
+  /Users/liuluying/.node-gyp/10.10.0/include/node/node_version.h
 ../src/syslog.cc:
 /Users/liuluying/.node-gyp/10.10.0/include/node/node.h:
 /Users/liuluying/.node-gyp/10.10.0/include/node/v8.h:
@@ -20,10 +13,3 @@ Release/obj.target/syslog/src/syslog.o: ../src/syslog.cc \
 /Users/liuluying/.node-gyp/10.10.0/include/node/v8config.h:
 /Users/liuluying/.node-gyp/10.10.0/include/node/v8-platform.h:
 /Users/liuluying/.node-gyp/10.10.0/include/node/node_version.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/errno.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/version.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/unix.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/threadpool.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/darwin.h:
-/Users/liuluying/.node-gyp/10.10.0/include/node/uv/pthread-barrier.h:
