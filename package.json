@@ -1,6 +1,6 @@
 {
   "name": "@myluluy/node-syslog",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "build": "node-gyp rebuild",
     "install": "node-gyp rebuild"
