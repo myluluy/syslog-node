@@ -112,10 +112,10 @@ void Facility (const FunctionCallbackInfo<Value>& args) {
     obj->Set(String::NewFromUtf8(isolate, "LOG_CRON"), v8::Number::New(isolate, LOG_CRON));
     obj->Set(String::NewFromUtf8(isolate, "LOG_AUTHPRIV"), v8::Number::New(isolate, LOG_AUTHPRIV));
     obj->Set(String::NewFromUtf8(isolate, "LOG_FTP"), v8::Number::New(isolate, LOG_FTP));
-    obj->Set(String::NewFromUtf8(isolate, "LOG_NETINFO"), v8::Number::New(isolate, LOG_NETINFO));
-    obj->Set(String::NewFromUtf8(isolate, "LOG_REMOTEAUTH"), v8::Number::New(isolate, LOG_REMOTEAUTH));
-    obj->Set(String::NewFromUtf8(isolate, "LOG_INSTALL"), v8::Number::New(isolate, LOG_INSTALL));
-    obj->Set(String::NewFromUtf8(isolate, "LOG_RAS"), v8::Number::New(isolate, LOG_RAS));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_NETINFO"), v8::Number::New(isolate, LOG_NETINFO));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_REMOTEAUTH"), v8::Number::New(isolate, LOG_REMOTEAUTH));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_INSTALL"), v8::Number::New(isolate, LOG_INSTALL));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_RAS"), v8::Number::New(isolate, LOG_RAS));
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL0"), v8::Number::New(isolate, LOG_LOCAL0));
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL1"), v8::Number::New(isolate, LOG_LOCAL1));
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL2"), v8::Number::New(isolate, LOG_LOCAL2));
@@ -124,7 +124,7 @@ void Facility (const FunctionCallbackInfo<Value>& args) {
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL5"), v8::Number::New(isolate, LOG_LOCAL5));
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL6"), v8::Number::New(isolate, LOG_LOCAL6));
     obj->Set(String::NewFromUtf8(isolate, "LOG_LOCAL7"), v8::Number::New(isolate, LOG_LOCAL7));
-    obj->Set(String::NewFromUtf8(isolate, "LOG_LAUNCHD"), v8::Number::New(isolate, LOG_LAUNCHD));
+    // obj->Set(String::NewFromUtf8(isolate, "LOG_LAUNCHD"), v8::Number::New(isolate, LOG_LAUNCHD));
     // obj->Set(String::NewFromUtf8(isolate, "LOG_NFACILITIES"), v8::Number::New(isolate, LOG_NFACILITIES));
     // obj->Set(String::NewFromUtf8(isolate, "LOG_FACMASK"), v8::Number::New(isolate, LOG_FACMASK));
     args.GetReturnValue().Set(obj);
