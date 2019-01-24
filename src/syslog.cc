@@ -29,6 +29,10 @@ void Syslog( char* ident, int option, int facility,  int priority, char* format)
   closelog();
 
 }
+
+void JsOpenlog(const FunctionCallbackInfo<Value>& args) {
+  
+}
 // void Openlog(char* ident, int option, int facility) {
 //   openlog(ident, option, facility);
 // }
