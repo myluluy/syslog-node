@@ -25,7 +25,7 @@ struct  reqData {
 
 void Syslog( char* ident, int option, int facility,  int priority, char* format) {
   openlog(ident, option, facility);
-  syslog(priority, format);
+  syslog(priority, "%s", format);
   closelog();
 
 }
@@ -85,6 +85,7 @@ void WriteSyslog(const FunctionCallbackInfo<Value>& args) {
   // loop = uv_default_loop();
   // uv_queue_work(loop, &request->req, uv_syslog, uv_syslog_after);
   Syslog(request->ident, request->option, request->facility, request->priority, request->format);
+  delete request;
   // uv_run(loop, UV_RUN_DEFAULT);
   // uv_loop_close(loop);
 }
