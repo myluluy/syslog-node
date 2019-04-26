@@ -45,13 +45,13 @@ CFLAGS_OBJC_Debug :=
 CFLAGS_OBJCC_Debug :=
 
 INCS_Debug := \
-	-I/Users/liuluying/.node-gyp/10.10.0/include/node \
-	-I/Users/liuluying/.node-gyp/10.10.0/src \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/openssl/config \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/openssl/openssl/include \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/uv/include \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/zlib \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/v8/include
+	-I/Users/liuluying/.node-gyp/10.15.3/include/node \
+	-I/Users/liuluying/.node-gyp/10.15.3/src \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/openssl/config \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/openssl/openssl/include \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/uv/include \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/zlib \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/v8/include
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=syslog' \
@@ -93,13 +93,13 @@ CFLAGS_OBJC_Release :=
 CFLAGS_OBJCC_Release :=
 
 INCS_Release := \
-	-I/Users/liuluying/.node-gyp/10.10.0/include/node \
-	-I/Users/liuluying/.node-gyp/10.10.0/src \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/openssl/config \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/openssl/openssl/include \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/uv/include \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/zlib \
-	-I/Users/liuluying/.node-gyp/10.10.0/deps/v8/include
+	-I/Users/liuluying/.node-gyp/10.15.3/include/node \
+	-I/Users/liuluying/.node-gyp/10.15.3/src \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/openssl/config \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/openssl/openssl/include \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/uv/include \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/zlib \
+	-I/Users/liuluying/.node-gyp/10.15.3/deps/v8/include
 
 OBJS := \
 	$(obj).target/$(TARGET)/src/syslog.o

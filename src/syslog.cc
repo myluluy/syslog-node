@@ -7,6 +7,7 @@ using v8::FunctionCallbackInfo;
 using v8::Function;
 using v8::Isolate;
 using v8::Local;
+using v8::MaybeLocal;
 using v8::Object;
 using v8::String;
 using v8::Value;
@@ -58,20 +59,21 @@ void JsOpenlog(const FunctionCallbackInfo<Value>& args) {
  // }
 void WriteSyslog(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = Isolate::GetCurrent();
+  Local<v8::Context> context = isolate->GetCurrentContext();
   v8::HandleScope scope(isolate);
-  v8::String::Utf8Value v8Ident(args[0]->ToString());
+  v8::String::Utf8Value v8Ident(isolate, args[0]);
   Local<Number> v8Option = Local<Number>::Cast(args[1]);
   Local<Number> v8Facility = Local<Number>::Cast(args[2]);
   Local<Number> v8Priority = Local<Number>::Cast(args[3]);
-  v8::String::Utf8Value v8Format(args[4]->ToString());
+  v8::String::Utf8Value v8Format(isolate,args[4]);
   // Local<Function> cb = Local<Function>::Cast(args[5]);
   char *cIdent;
   char *cFormat;
   cIdent =  *v8Ident;
   cFormat = *v8Format;
-  int option = v8Option->NumberValue();
-  int facility = v8Facility->NumberValue();
-  int priority = v8Priority->NumberValue();
+  double option = v8Option->NumberValue(context).FromMaybe(0);
+  double facility = v8Facility->NumberValue(context).FromMaybe(0);
+  double priority = v8Priority->NumberValue(context).FromMaybe(0);
   reqData* request = new reqData;
   // request->req.data = request;
   request->ident = cIdent;
@@ -92,7 +94,7 @@ void WriteSyslog(const FunctionCallbackInfo<Value>& args) {
 
 void Option (const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    Local<Object> obj = Object::New(isolate);
+    Local<v8::Object> obj = v8::Object::New(isolate);
     obj->Set(String::NewFromUtf8(isolate, "LOG_PID"), v8::Number::New(isolate, LOG_PID));
     obj->Set(String::NewFromUtf8(isolate, "LOG_CONS"), v8::Number::New(isolate, LOG_CONS));
     obj->Set(String::NewFromUtf8(isolate, "LOG_ODELAY"), v8::Number::New(isolate, LOG_ODELAY));
@@ -104,7 +106,7 @@ void Option (const FunctionCallbackInfo<Value>& args) {
 
 void Facility (const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    Local<Object> obj = Object::New(isolate);
+    Local<v8::Object> obj = v8::Object::New(isolate);
     obj->Set(String::NewFromUtf8(isolate, "LOG_KERN"), v8::Number::New(isolate, LOG_KERN));
     obj->Set(String::NewFromUtf8(isolate, "LOG_USER"), v8::Number::New(isolate, LOG_USER));
     obj->Set(String::NewFromUtf8(isolate, "LOG_MAIL"), v8::Number::New(isolate, LOG_MAIL));
@@ -136,7 +138,7 @@ void Facility (const FunctionCallbackInfo<Value>& args) {
 }
 void Priority (const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    Local<Object> obj = Object::New(isolate);
+    Local<v8::Object> obj = v8::Object::New(isolate);
     obj->Set(String::NewFromUtf8(isolate, "LOG_EMERG"), v8::Number::New(isolate, LOG_EMERG));
     obj->Set(String::NewFromUtf8(isolate, "LOG_ALERT"), v8::Number::New(isolate, LOG_ALERT));
     obj->Set(String::NewFromUtf8(isolate, "LOG_CRIT"), v8::Number::New(isolate, LOG_CRIT));
@@ -148,7 +150,7 @@ void Priority (const FunctionCallbackInfo<Value>& args) {
     args.GetReturnValue().Set(obj); 
 }
 
-void init(Local<Object> exports) {
+void init(Local<v8::Object> exports) {
   NODE_SET_METHOD(exports, "option", Option);
   NODE_SET_METHOD(exports, "facility", Facility);
   NODE_SET_METHOD(exports, "priority", Priority);
