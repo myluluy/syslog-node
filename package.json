@@ -6,7 +6,7 @@
     "install": "node-gyp rebuild"
   },
   "main": "index.cc",
-  "author": "luying3@staff.sina.com.cn",
+  "author": "myluluy@gmail.com",
   "license": "MIT",
   "gypfile": true,
   "description": "用syslog发送系统日志",

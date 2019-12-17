@@ -11,9 +11,9 @@ let priority = Syslog.priority()
  * @param {string} format - 日志的内容。
  */
 function syslog (ident, option, facility, priority, format) {
-    if(isNaN(option) || isNaN(facility) || isNaN(priority) || typeof ident !== 'string' || typeof format !== 'string') {
-        throw Error('参数格式错误')
-    }
+    // if(isNaN(option) || isNaN(facility) || isNaN(priority) || typeof ident !== 'string' || typeof format !== 'string') {
+    //     throw Error('参数格式错误')
+    // }
     Syslog.syslog(ident, option, facility, priority, format);
 }
 

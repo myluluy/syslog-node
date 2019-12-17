@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "syslog",
-      "sources": [ "./src/syslog.cc" ]
+      "sources": [ "./src/main.cc" ]
     }
   ]
 }

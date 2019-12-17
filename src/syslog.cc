@@ -2,7 +2,6 @@
 #include <node.h>
 // #include <uv.h>
 #include <syslog.h>
- 
 using v8::FunctionCallbackInfo;
 using v8::Function;
 using v8::Isolate;
