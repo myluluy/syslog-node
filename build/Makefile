@@ -40,26 +40,28 @@ all_deps :=
 
 
 
-CC.target ?= /usr/bin/clang
+CC.target ?= $(CC)
 CFLAGS.target ?= $(CPPFLAGS) $(CFLAGS)
-CXX.target ?= /usr/bin/clang++
+CXX.target ?= $(CXX)
 CXXFLAGS.target ?= $(CPPFLAGS) $(CXXFLAGS)
 LINK.target ?= $(LINK)
 LDFLAGS.target ?= $(LDFLAGS)
 AR.target ?= $(AR)
+PLI.target ?= pli
 
 # C++ apps need to be linked with g++.
 LINK ?= $(CXX.target)
 
 # TODO(evan): move all cross-compilation logic to gyp-time so we don't need
 # to replicate this environment fallback in make as well.
-CC.host ?= /usr/bin/clang
+CC.host ?= gcc
 CFLAGS.host ?= $(CPPFLAGS_host) $(CFLAGS_host)
-CXX.host ?= /usr/bin/clang++
+CXX.host ?= g++
 CXXFLAGS.host ?= $(CPPFLAGS_host) $(CXXFLAGS_host)
 LINK.host ?= $(CXX.host)
-LDFLAGS.host ?=
+LDFLAGS.host ?= $(LDFLAGS_host)
 AR.host ?= ar
+PLI.host ?= pli
 
 # Define a dir function that can handle spaces.
 # http://www.gnu.org/software/make/manual/make.html#Syntax-of-Functions
@@ -121,10 +123,10 @@ endef
 # - quiet_cmd_foo is the brief-output summary of the command.
 
 quiet_cmd_cc = CC($(TOOLSET)) $@
-cmd_cc = $(CC.$(TOOLSET)) $(GYP_CFLAGS) $(DEPFLAGS) $(CFLAGS.$(TOOLSET)) -c -o $@ $<
+cmd_cc = $(CC.$(TOOLSET)) -o $@ $< $(GYP_CFLAGS) $(DEPFLAGS) $(CFLAGS.$(TOOLSET)) -c
 
 quiet_cmd_cxx = CXX($(TOOLSET)) $@
-cmd_cxx = $(CXX.$(TOOLSET)) $(GYP_CXXFLAGS) $(DEPFLAGS) $(CXXFLAGS.$(TOOLSET)) -c -o $@ $<
+cmd_cxx = $(CXX.$(TOOLSET)) -o $@ $< $(GYP_CXXFLAGS) $(DEPFLAGS) $(CXXFLAGS.$(TOOLSET)) -c
 
 quiet_cmd_objc = CXX($(TOOLSET)) $@
 cmd_objc = $(CC.$(TOOLSET)) $(GYP_OBJCFLAGS) $(DEPFLAGS) -c -o $@ $<
@@ -159,7 +161,10 @@ cmd_touch = touch $@
 
 quiet_cmd_copy = COPY $@
 # send stderr to /dev/null to ignore messages when linking directories.
-cmd_copy = rm -rf "$@" && cp -af "$<" "$@"
+cmd_copy = ln -f "$<" "$@" 2>/dev/null || (rm -rf "$@" && cp -af "$<" "$@")
+
+quiet_cmd_symlink = SYMLINK $@
+cmd_symlink = ln -sf "$<" "$@"
 
 quiet_cmd_alink = LIBTOOL-STATIC $@
 cmd_alink = rm -f $@ && ./gyp-mac-tool filter-libtool libtool $(GYP_LIBTOOLFLAGS) -static -o $@ $(filter %.o,$^)
@@ -278,9 +283,9 @@ $(obj).$(TOOLSET)/%.o: $(srcdir)/%.m FORCE_DO_CMD
 	@$(call do_cmd,objc,1)
 $(obj).$(TOOLSET)/%.o: $(srcdir)/%.mm FORCE_DO_CMD
 	@$(call do_cmd,objcxx,1)
-$(obj).$(TOOLSET)/%.o: $(srcdir)/%.S FORCE_DO_CMD
-	@$(call do_cmd,cc,1)
 $(obj).$(TOOLSET)/%.o: $(srcdir)/%.s FORCE_DO_CMD
+	@$(call do_cmd,cc,1)
+$(obj).$(TOOLSET)/%.o: $(srcdir)/%.S FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
 # Try building from generated source, too.
@@ -296,9 +301,9 @@ $(obj).$(TOOLSET)/%.o: $(obj).$(TOOLSET)/%.m FORCE_DO_CMD
 	@$(call do_cmd,objc,1)
 $(obj).$(TOOLSET)/%.o: $(obj).$(TOOLSET)/%.mm FORCE_DO_CMD
 	@$(call do_cmd,objcxx,1)
-$(obj).$(TOOLSET)/%.o: $(obj).$(TOOLSET)/%.S FORCE_DO_CMD
-	@$(call do_cmd,cc,1)
 $(obj).$(TOOLSET)/%.o: $(obj).$(TOOLSET)/%.s FORCE_DO_CMD
+	@$(call do_cmd,cc,1)
+$(obj).$(TOOLSET)/%.o: $(obj).$(TOOLSET)/%.S FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
 $(obj).$(TOOLSET)/%.o: $(obj)/%.c FORCE_DO_CMD
@@ -313,9 +318,9 @@ $(obj).$(TOOLSET)/%.o: $(obj)/%.m FORCE_DO_CMD
 	@$(call do_cmd,objc,1)
 $(obj).$(TOOLSET)/%.o: $(obj)/%.mm FORCE_DO_CMD
 	@$(call do_cmd,objcxx,1)
-$(obj).$(TOOLSET)/%.o: $(obj)/%.S FORCE_DO_CMD
-	@$(call do_cmd,cc,1)
 $(obj).$(TOOLSET)/%.o: $(obj)/%.s FORCE_DO_CMD
+	@$(call do_cmd,cc,1)
+$(obj).$(TOOLSET)/%.o: $(obj)/%.S FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
 
@@ -326,8 +331,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "--toplevel-dir=." -I/Users/liuluying/git/syslog-node/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/Users/liuluying/.node-gyp/10.10.0/include/node/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/liuluying/.node-gyp/10.10.0" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=/Users/liuluying/.node-gyp/10.10.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/Users/liuluying/git/syslog-node" "-Dnode_engine=v8" binding.gyp
-Makefile: $(srcdir)/../../.node-gyp/10.10.0/include/node/common.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../../usr/local/lib/node_modules/node-gyp/addon.gypi
+cmd_regen_makefile = cd $(srcdir); /Users/luying3/.nvm/versions/node/v16.14.2/lib/node_modules/npm/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/luying3/Library/Caches/node-gyp/16.14.2" "-Dnode_gyp_dir=/Users/luying3/.nvm/versions/node/v16.14.2/lib/node_modules/npm/node_modules/node-gyp" "-Dnode_lib_file=/Users/luying3/Library/Caches/node-gyp/16.14.2/<(target_arch)/node.lib" "-Dmodule_root_dir=/Users/luying3/git/syslog-node" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/Users/luying3/git/syslog-node/build/config.gypi -I/Users/luying3/.nvm/versions/node/v16.14.2/lib/node_modules/npm/node_modules/node-gyp/addon.gypi -I/Users/luying3/Library/Caches/node-gyp/16.14.2/include/node/common.gypi "--toplevel-dir=." binding.gyp
+Makefile: $(srcdir)/binding.gyp $(srcdir)/../../Library/Caches/node-gyp/16.14.2/include/node/common.gypi $(srcdir)/build/config.gypi $(srcdir)/../../.nvm/versions/node/v16.14.2/lib/node_modules/npm/node_modules/node-gyp/addon.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included
