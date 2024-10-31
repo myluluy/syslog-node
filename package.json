@@ -1,11 +1,10 @@
 {
   "name": "@myluluy/node-syslog",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "build": "node-gyp rebuild",
     "install": "node-gyp rebuild"
   },
-  "main": "main.cc",
   "author": "myluluy@gmail.com",
   "license": "MIT",
   "gypfile": true,
